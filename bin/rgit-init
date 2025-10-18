@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+# vim: set filetype=ruby :
+
+RGIT_DIR=".rgit".freeze
+OBJECTS_DIR=File.join(RGIT_DIR, "objects").freeze
+REFS_DIR=File.join(RGIT_DIR, "refs").freeze
+
+if Dir.exist? RGIT_DIR
+  $stderr.puts  "rgit project already exists."
+  exit 1
+end
+
+def build_objects_dir
+  Dir.mkdir OBJECTS_DIR
+  Dir.mkdir File.join(OBJECTS_DIR, "info")
+  Dir.mkdir File.join(OBJECTS_DIR, "pack")
+end
+
+def build_refs_directory
+  Dir.mkdir REFS_DIR
+  Dir.mkdir File.join(REFS_DIR, "heads")
+  Dir.mkdir File.join(REFS_DIR, "tags")
+end
+
+def initialize_head
+  File.open(File.join(RGIT_DIR, "HEAD"), 'w') do |file|
+    file.puts "rref: refs/heads/master"
+  end
+end
+
+Dir.mkdir RGIT_DIR
+build_objects_dir
+build_refs_directory
+initialize_head
+
+$stdout.puts "rgit initialized in #{RGIT_DIR}/."

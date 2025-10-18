@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+# vim: set filetype=ruby :
+
+# bin/rgit
+
+command, *args = ARGV
+
+if command.nil?
+  $stderr.puts "Usage: rgit <command> [<args>]"
+  exit 1
+end
+
+command_path = File.expand_path("../rgit-#{command}", __FILE__)
+
+if !File.exist? command_path
+  $stderr.puts "No such command"
+  exit 1
+end
+
+exec command_path, *args
